@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% block title %}VietTour - Khám Phá Việt Nam{% endblock %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Khám Phá Việt Nam <br><span>Tuyệt Đẹp</span></h1>
+        <p>Hàng trăm tour du lịch trong nước và quốc tế với giá tốt nhất</p>
+        <div class="hero-search">
+            <form action="{{ url_for('tours') }}" method="GET" class="search-form">
+                <input type="text" name="search" placeholder="Tìm kiếm điểm đến...">
+                <button type="submit"><i class="fas fa-search"></i> Tìm Tour</button>
+            </form>
+        </div>
+    </div>
+    <div class="hero-stats">
+        <div class="stat">
+            <strong>500+</strong>
+            <span>Tour du lịch</span>
+        </div>
+        <div class="stat">
+            <strong>50K+</strong>
+            <span>Khách hàng</span>
+        </div>
+        <div class="stat">
+            <strong>4.9★</strong>
+            <span>Đánh giá</span>
+        </div>
+        <div class="stat">
+            <strong>15+</strong>
+            <span>Năm kinh nghiệm</span>
+        </div>
+    </div>
+</section>
+
+<!-- DANH MỤC -->
+<section class="section categories-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Khám Phá Theo Loại</h2>
+            <p>Chọn hành trình phù hợp với bạn</p>
+        </div>
+        <div class="categories-grid">
+            <a href="{{ url_for('tours', category='trong_nuoc') }}" class="category-card">
+                <div class="category-icon">🏞️</div>
+                <h3>Tour Trong Nước</h3>
+                <p>Khám phá vẻ đẹp Việt Nam</p>
+            </a>
+            <a href="{{ url_for('tours', category='nuoc_ngoai') }}" class="category-card">
+                <div class="category-icon">✈️</div>
+                <h3>Tour Nước Ngoài</h3>
+                <p>Trải nghiệm thế giới</p>
+            </a>
+            <a href="{{ url_for('tours') }}" class="category-card">
+                <div class="category-icon">🏖️</div>
+                <h3>Tour Biển Đảo</h3>
+                <p>Nghỉ dưỡng tuyệt vời</p>
+            </a>
+            <a href="{{ url_for('tours') }}" class="category-card">
+                <div class="category-icon">🏔️</div>
+                <h3>Tour Núi Rừng</h3>
+                <p>Phiêu lưu khám phá</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- TOUR NỔI BẬT -->
+<section class="section featured-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Tour Nổi Bật</h2>
+            <p>Các tour được yêu thích nhất</p>
+        </div>
+        <div class="tours-grid">
+            {% for tour in featured_tours %}
+            <div class="tour-card">
+                <div class="tour-image">
+                    <div class="tour-img-placeholder">
+                        {% if 'halong' in tour.image %}🌊
+                        {% elif 'hoian' in tour.image %}🏮
+                        {% elif 'phuquoc' in tour.image %}🏝️
+                        {% elif 'sapa' in tour.image %}⛰️
+                        {% elif 'thailand' in tour.image %}🛕
+                        {% else %}🌍{% endif %}
+                    </div>
+                    <span class="tour-badge">{{ tour.category | replace('trong_nuoc','Trong nước') | replace('nuoc_ngoai','Quốc tế') }}</span>
+                </div>
+                <div class="tour-info">
+                    <h3>{{ tour.name }}</h3>
+                    <p class="tour-dest"><i class="fas fa-map-marker-alt"></i> {{ tour.destination }}</p>
+                    <p class="tour-duration"><i class="fas fa-clock"></i> {{ tour.duration }}</p>
+                    <div class="tour-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>{{ tour.rating }} ({{ tour.reviews }} đánh giá)</span>
+                    </div>
+                    <div class="tour-footer">
+                        <div class="tour-price">
+                            <span class="price-from">Từ</span>
+                            <strong>{{ tour.price | format_price }}đ</strong>
+                        </div>
+                        <a href="{{ url_for('tour_detail', tour_id=tour.id) }}" class="btn btn-primary">Xem Chi Tiết</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-3">
+            <a href="{{ url_for('tours') }}" class="btn btn-outline">Xem Tất Cả Tour <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- VÌ SAO CHỌN CHÚNG TÔI -->
+<section class="section why-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Tại Sao Chọn VietTour?</h2>
+        </div>
+        <div class="why-grid">
+            <div class="why-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>An Toàn & Uy Tín</h3>
+                <p>15 năm kinh nghiệm, cam kết chất lượng dịch vụ tốt nhất</p>
+            </div>
+            <div class="why-card">
+                <i class="fas fa-tag"></i>
+                <h3>Giá Tốt Nhất</h3>
+                <p>Cam kết giá cạnh tranh, nhiều ưu đãi hấp dẫn quanh năm</p>
+            </div>
+            <div class="why-card">
+                <i class="fas fa-headset"></i>
+                <h3>Hỗ Trợ 24/7</h3>
+                <p>Đội ngũ hỗ trợ nhiệt tình, sẵn sàng phục vụ mọi lúc</p>
+            </div>
+            <div class="why-card">
+                <i class="fas fa-route"></i>
+                <h3>Lịch Trình Linh Hoạt</h3>
+                <p>Tùy chỉnh hành trình theo sở thích và ngân sách của bạn</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="cta-section">
+    <div class="container">
+        <h2>Sẵn Sàng Cho Chuyến Đi Mơ Ước?</h2>
+        <p>Đăng ký ngay để nhận ưu đãi giảm 10% cho lần đặt tour đầu tiên</p>
+        <a href="{{ url_for('tours') }}" class="btn btn-white">Đặt Tour Ngay</a>
+    </div>
+</section>
+
+{% endblock %}

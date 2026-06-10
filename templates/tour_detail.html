@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}{{ tour.name }} - VietTour{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="{{ url_for('index') }}">Trang chủ</a>
+            <i class="fas fa-chevron-right"></i>
+            <a href="{{ url_for('tours') }}">Danh sách tour</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>{{ tour.name }}</span>
+        </nav>
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+        <div class="detail-layout">
+
+            <!-- LEFT: Thông tin tour -->
+            <div class="detail-main">
+                <div class="detail-hero">
+                    <div class="detail-img-placeholder">
+                        {% if 'halong' in tour.image %}🌊
+                        {% elif 'hoian' in tour.image %}🏮
+                        {% elif 'phuquoc' in tour.image %}🏝️
+                        {% elif 'sapa' in tour.image %}⛰️
+                        {% elif 'thailand' in tour.image %}🛕
+                        {% else %}🌍{% endif %}
+                    </div>
+                </div>
+
+                <h1 class="detail-title">{{ tour.name }}</h1>
+
+                <div class="detail-meta">
+                    <span><i class="fas fa-map-marker-alt"></i> {{ tour.destination }}</span>
+                    <span><i class="fas fa-clock"></i> {{ tour.duration }}</span>
+                    <span><i class="fas fa-star"></i> {{ tour.rating }} ({{ tour.reviews }} đánh giá)</span>
+                </div>
+
+                <div class="detail-section">
+                    <h2>Mô Tả Tour</h2>
+                    <p>{{ tour.description }}</p>
+                </div>
+
+                <div class="detail-section">
+                    <h2>Điểm Nổi Bật</h2>
+                    <ul class="highlights-list">
+                        {% for h in tour.highlights %}
+                        <li><i class="fas fa-check-circle"></i> {{ h }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="detail-section">
+                    <h2>Dịch Vụ Bao Gồm</h2>
+                    <div class="services-grid">
+                        <div class="service-item"><i class="fas fa-bus"></i> Xe đưa đón</div>
+                        <div class="service-item"><i class="fas fa-hotel"></i> Khách sạn</div>
+                        <div class="service-item"><i class="fas fa-utensils"></i> Bữa ăn</div>
+                        <div class="service-item"><i class="fas fa-user-tie"></i> Hướng dẫn viên</div>
+                        <div class="service-item"><i class="fas fa-ticket-alt"></i> Vé tham quan</div>
+                        <div class="service-item"><i class="fas fa-shield-alt"></i> Bảo hiểm</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Đặt tour -->
+            <div class="detail-sidebar">
+                <div class="booking-card">
+                    <div class="booking-price">
+                        <span>Giá chỉ từ</span>
+                        <strong>{{ tour.price | format_price }}đ</strong>
+                        <span>/người</span>
+                    </div>
+
+                    <form action="{{ url_for('add_to_cart') }}" method="POST" class="booking-form">
+                        <input type="hidden" name="tour_id" value="{{ tour.id }}">
+
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar"></i> Ngày khởi hành</label>
+                            <input type="date" name="date" required min="{{ '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-users"></i> Số khách</label>
+                            <div class="quantity-input">
+                                <button type="button" onclick="changeGuests(-1)">−</button>
+                                <input type="number" name="guests" id="guests" value="1" min="1" max="20">
+                                <button type="button" onclick="changeGuests(1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-shopping-bag"></i> Số lượng đặt</label>
+                            <div class="quantity-input">
+                                <button type="button" onclick="changeQty(-1)">−</button>
+                                <input type="number" name="quantity" id="quantity" value="1" min="1" max="10">
+                                <button type="button" onclick="changeQty(1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="price-breakdown">
+                            <div class="price-row">
+                                <span>Giá tour</span>
+                                <span id="unit-price">{{ tour.price | format_price }}đ</span>
+                            </div>
+                            <div class="price-row total-row">
+                                <strong>Tổng cộng</strong>
+                                <strong id="total-price">{{ tour.price | format_price }}đ</strong>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-shopping-cart"></i> Thêm Vào Giỏ Hàng
+                        </button>
+                    </form>
+
+                    <div class="booking-note">
+                        <p><i class="fas fa-shield-alt"></i> Đặt cọc chỉ 30%</p>
+                        <p><i class="fas fa-undo"></i> Hoàn tiền 100% nếu hủy trước 7 ngày</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+const unitPrice = {{ tour.price }};
+
+function changeGuests(delta) {
+    const input = document.getElementById('guests');
+    input.value = Math.max(1, Math.min(20, parseInt(input.value) + delta));
+}
+
+function changeQty(delta) {
+    const input = document.getElementById('quantity');
+    input.value = Math.max(1, Math.min(10, parseInt(input.value) + delta));
+    updateTotal();
+}
+
+function updateTotal() {
+    const qty = parseInt(document.getElementById('quantity').value);
+    const total = unitPrice * qty;
+    document.getElementById('total-price').textContent = total.toLocaleString('vi-VN') + 'đ';
+}
+
+document.getElementById('quantity').addEventListener('input', updateTotal);
+</script>
+{% endblock %}

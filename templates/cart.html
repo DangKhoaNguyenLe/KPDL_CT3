@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block title %}Giỏ Hàng - VietTour{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="container">
+        <h1><i class="fas fa-shopping-cart"></i> Giỏ Hàng</h1>
+        <p>Xem lại và hoàn tất đặt tour của bạn</p>
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+        {% if cart_items %}
+        <div class="cart-layout">
+
+            <!-- DANH SÁCH GIỎ HÀNG -->
+            <div class="cart-items">
+                <div class="cart-header">
+                    <span>Tour</span>
+                    <span>Thông tin</span>
+                    <span>Đơn giá</span>
+                    <span>Số lượng</span>
+                    <span>Thành tiền</span>
+                    <span></span>
+                </div>
+
+                {% for item in cart_items %}
+                <div class="cart-item">
+                    <div class="cart-item-img">
+                        <div class="cart-img-placeholder">
+                            {% if 'halong' in item.tour.image %}🌊
+                            {% elif 'hoian' in item.tour.image %}🏮
+                            {% elif 'phuquoc' in item.tour.image %}🏝️
+                            {% elif 'sapa' in item.tour.image %}⛰️
+                            {% elif 'thailand' in item.tour.image %}🛕
+                            {% else %}🌍{% endif %}
+                        </div>
+                    </div>
+                    <div class="cart-item-info">
+                        <h4><a href="{{ url_for('tour_detail', tour_id=item.tour.id) }}">{{ item.tour.name }}</a></h4>
+                        <p><i class="fas fa-map-marker-alt"></i> {{ item.tour.destination }}</p>
+                        <p><i class="fas fa-clock"></i> {{ item.tour.duration }}</p>
+                        {% if item.date %}
+                        <p><i class="fas fa-calendar"></i> Ngày đi: {{ item.date }}</p>
+                        {% endif %}
+                        <p><i class="fas fa-users"></i> {{ item.guests }} khách</p>
+                    </div>
+                    <div class="cart-item-price">
+                        {{ item.tour.price | format_price }}đ
+                    </div>
+                    <div class="cart-item-qty">
+                        <form action="{{ url_for('update_cart') }}" method="POST" class="qty-form">
+                            <input type="hidden" name="key" value="{{ item.key }}">
+                            <div class="quantity-input">
+                                <button type="button" onclick="changeCartQty(this, -1)">−</button>
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="10"
+                                       onchange="this.form.submit()">
+                                <button type="button" onclick="changeCartQty(this, 1)">+</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="cart-item-subtotal">
+                        <strong>{{ item.subtotal | format_price }}đ</strong>
+                    </div>
+                    <div class="cart-item-remove">
+                        <a href="{{ url_for('remove_from_cart', key=item.key) }}"
+                           class="remove-btn"
+                           onclick="return confirm('Xóa tour này khỏi giỏ hàng?')">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- TỔNG KẾT -->
+            <div class="cart-summary">
+                <h3>Tóm Tắt Đơn Hàng</h3>
+
+                <div class="summary-rows">
+                    {% for item in cart_items %}
+                    <div class="summary-row">
+                        <span>{{ item.tour.name }} x{{ item.quantity }}</span>
+                        <span>{{ item.subtotal | format_price }}đ</span>
+                    </div>
+                    {% endfor %}
+                    <div class="summary-divider"></div>
+                    <div class="summary-row">
+                        <span>Phí dịch vụ</span>
+                        <span>Miễn phí</span>
+                    </div>
+                    <div class="summary-row total">
+                        <strong>Tổng cộng</strong>
+                        <strong>{{ total | format_price }}đ</strong>
+                    </div>
+                </div>
+
+                <!-- COUPON -->
+                <div class="coupon-section">
+                    <input type="text" placeholder="Mã giảm giá" class="coupon-input">
+                    <button class="btn btn-outline coupon-btn">Áp dụng</button>
+                </div>
+
+                <!-- THANH TOÁN -->
+                <form action="{{ url_for('checkout') }}" method="POST">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">
+                        <i class="fas fa-credit-card"></i> Thanh Toán Ngay
+                    </button>
+                </form>
+
+                <a href="{{ url_for('tours') }}" class="btn btn-outline btn-block mt-1">
+                    <i class="fas fa-arrow-left"></i> Tiếp Tục Xem Tour
+                </a>
+
+                <div class="payment-icons">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fas fa-university"></i>
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+        <!-- GIỎ HÀNG TRỐNG -->
+        <div class="empty-cart">
+            <div class="empty-icon">🛒</div>
+            <h2>Giỏ hàng của bạn đang trống</h2>
+            <p>Hãy thêm tour để bắt đầu hành trình khám phá!</p>
+            <a href="{{ url_for('tours') }}" class="btn btn-primary">
+                <i class="fas fa-map-marked-alt"></i> Xem Danh Sách Tour
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+<script>
+function changeCartQty(btn, delta) {
+    const form = btn.closest('.qty-form');
+    const input = form.querySelector('input[name="quantity"]');
+    const newVal = Math.max(1, Math.min(10, parseInt(input.value) + delta));
+    input.value = newVal;
+    form.submit();
+}
+</script>
+{% endblock %}

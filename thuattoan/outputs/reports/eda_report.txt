@@ -1,0 +1,195 @@
+PHÂN TÍCH THỐNG KÊ MÔ TẢ (EDA)
+
+
+Đọc dữ liệu từ: D:\KPDL\DeTai3\Data\cleaned\TravelInsurance_cleaned.csv
+Kích thước: 1249 dòng x 9 cột
+
+PHẦN A: THỐNG KÊ MÔ TẢ CƠ BẢN
+
+A1. Thống kê mô tả các biến số:
+               Age  AnnualIncome  FamilyMembers  ChronicDiseases  TravelInsurance
+count  1249.000000  1.249000e+03    1249.000000      1249.000000      1249.000000
+mean     29.755805  9.345476e+05       4.890312         0.333066         0.386709
+std       2.921039  3.607293e+05       1.762313         0.471499         0.487191
+min      25.000000  3.000000e+05       2.000000         0.000000         0.000000
+25%      28.000000  6.000000e+05       4.000000         0.000000         0.000000
+50%      29.000000  9.000000e+05       5.000000         0.000000         0.000000
+75%      32.000000  1.200000e+06       6.000000         1.000000         1.000000
+max      35.000000  1.800000e+06       9.000000         1.000000         1.000000
+
+A2. Thống kê các biến phân loại:
+
+   --- Employment Type ---
+                              Số lượng  Tỷ lệ (%)
+Employment Type                                  
+Private Sector/Self Employed       876      70.14
+Government Sector                  373      29.86
+
+   --- GraduateOrNot ---
+               Số lượng  Tỷ lệ (%)
+GraduateOrNot                     
+Yes                1047      83.83
+No                  202      16.17
+
+   --- FrequentFlyer ---
+               Số lượng  Tỷ lệ (%)
+FrequentFlyer                     
+No                  954      76.38
+Yes                 295      23.62
+
+   --- EverTravelledAbroad ---
+                     Số lượng  Tỷ lệ (%)
+EverTravelledAbroad                     
+No                       1005      80.46
+Yes                       244      19.54
+
+A3. Ma trận tương quan:
+                       Age  Employment Type  GraduateOrNot  AnnualIncome  FamilyMembers  ChronicDiseases  FrequentFlyer  EverTravelledAbroad  TravelInsurance
+Age                  1.000           -0.152          0.019        -0.005          0.014            0.001         -0.032               -0.023            0.068
+Employment Type     -0.152            1.000         -0.154         0.239          0.013           -0.014          0.120                0.141            0.076
+GraduateOrNot        0.019           -0.154          1.000         0.125          0.027            0.034         -0.032                0.024            0.032
+AnnualIncome        -0.005            0.239          0.125         1.000         -0.013            0.016          0.293                0.430            0.294
+FamilyMembers        0.014            0.013          0.027        -0.013          1.000           -0.015         -0.022               -0.022            0.085
+ChronicDiseases      0.001           -0.014          0.034         0.016         -0.015            1.000         -0.077                0.020           -0.010
+FrequentFlyer       -0.032            0.120         -0.032         0.293         -0.022           -0.077          1.000                0.206            0.127
+EverTravelledAbroad -0.023            0.141          0.024         0.430         -0.022            0.020          0.206                1.000            0.301
+TravelInsurance      0.068            0.076          0.032         0.294          0.085           -0.010          0.127                0.301            1.000
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\A3_correlation_heatmap.png
+
+PHẦN B: PHÂN PHỐI TỪNG BIẾN (UNIVARIATE ANALYSIS)
+
+B1. Phân phối tuổi (Age)
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\B1_age_distribution.png
+
+B2. Phân phối thu nhập (AnnualIncome)
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\B2_income_distribution.png
+
+B3. Phân phối số thành viên gia đình
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\B3_family_members.png
+
+B4. Tỷ lệ loại hình công việc
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\B4_employment_type.png
+
+B5. Tỷ lệ tốt nghiệp ĐH
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\B5_graduate_ratio.png
+
+B6. Tỷ lệ bệnh mãn tính
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\B6_chronic_diseases.png
+
+B7. Tỷ lệ bay thường xuyên
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\B7_frequent_flyer.png
+
+B8. Tỷ lệ đã đi nước ngoài
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\B8_travelled_abroad.png
+
+B9. Tỷ lệ mua bảo hiểm du lịch (biến mục tiêu)
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\B9_travel_insurance_target.png
+
+PHẦN C: PHÂN TÍCH MỐI QUAN HỆ GIỮA CÁC BIẾN (BIVARIATE)
+
+C1. Tuổi vs Mua bảo hiểm
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\C1_age_vs_insurance.png
+
+C2. Thu nhập vs Mua bảo hiểm
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\C2_income_vs_insurance.png
+
+Thu nhập trung bình theo nhóm:
+                            mean     median       std
+TravelInsurance_Label                                
+Co mua                 1068012.0  1100000.0  373551.0
+Khong mua               850392.0   800000.0  325616.0
+
+C3. Loại công việc vs Mua bảo hiểm
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\C3_employment_vs_insurance.png
+
+C4. Tốt nghiệp ĐH vs Mua bảo hiểm
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\C4_graduate_vs_insurance.png
+
+C5. Bay thường xuyên vs Mua bảo hiểm
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\C5_frequent_flyer_vs_insurance.png
+
+C6. Đi nước ngoài vs Mua bảo hiểm
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\C6_abroad_vs_insurance.png
+
+C7. Bệnh mãn tính vs Mua bảo hiểm
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\C7_chronic_vs_insurance.png
+
+C8. Số thành viên gia đình vs Mua bảo hiểm
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\C8_family_vs_insurance.png
+
+PHẦN D: PHÂN TÍCH ĐA BIẾN (MULTIVARIATE)
+
+D1. Pairplot các biến số theo biến mục tiêu
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\D1_pairplot.png
+
+D2. Heatmap tương quan chi tiết
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\D2_full_correlation_heatmap.png
+
+D3. Thu nhập theo nhóm tuổi và bảo hiểm
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\D3_income_agegroup_insurance.png
+
+PHẦN E: PHÂN TÍCH HÀNH VI KHÁCH HÀNG CHUYÊN SÂU
+
+E1. Phân khúc khách hàng theo thu nhập
+Ngưỡng phân khúc: Thấp < 750,000 | Trung bình < 1,100,000 | Cao >= 1,100,000
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\E1_income_segmentation.png
+
+E2. Profile khách hàng mua vs không mua bảo hiểm
+
+   Profile so sánh:
+               Age  AnnualIncome  FamilyMembers  ChronicDiseases  FrequentFlyer (%)  EverTravelledAbroad (%)
+Khong mua BH  29.6     850391.64           4.77             0.34              19.32                    10.05
+Co mua BH     30.0    1068012.42           5.08             0.33              30.43                    34.58
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\E2_customer_profile_comparison.png
+
+E3. Crosstab: Bay thường xuyên × Đi nước ngoài × Mua bảo hiểm
+
+Bảng chéo:
+TravelInsurance_Label              Co mua  Khong mua   All
+FrequentFlyer EverTravelledAbroad                         
+No            No                      250        561   811
+              Yes                      86         57   143
+Yes           No                       66        128   194
+              Yes                      81         20   101
+All                                   483        766  1249
+
+   Tỷ lệ (%):
+TravelInsurance                       0     1
+FrequentFlyer EverTravelledAbroad            
+No            No                   69.2  30.8
+              Yes                  39.9  60.1
+Yes           No                   66.0  34.0
+              Yes                  19.8  80.2
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\E3_crosstab_flyer_abroad_insurance.png
+
+TỔNG HỢP: DASHBOARD TỔNG QUAN
+Đã lưu: D:\KPDL\DeTai3\outputs\charts\DASHBOARD_overview.png
+
+KẾT QUẢ
+
+Tổng số biểu đồ đã tạo: 25
+   A3_correlation_heatmap.png
+   B1_age_distribution.png
+   B2_income_distribution.png
+   B3_family_members.png
+   B4_employment_type.png
+   B5_graduate_ratio.png
+   B6_chronic_diseases.png
+   B7_frequent_flyer.png
+   B8_travelled_abroad.png
+   B9_travel_insurance_target.png
+   C1_age_vs_insurance.png
+   C2_income_vs_insurance.png
+   C3_employment_vs_insurance.png
+   C4_graduate_vs_insurance.png
+   C5_frequent_flyer_vs_insurance.png
+   C6_abroad_vs_insurance.png
+   C7_chronic_vs_insurance.png
+   C8_family_vs_insurance.png
+   D1_pairplot.png
+   D2_full_correlation_heatmap.png
+   D3_income_agegroup_insurance.png
+   DASHBOARD_overview.png
+   E1_income_segmentation.png
+   E2_customer_profile_comparison.png
+   E3_crosstab_flyer_abroad_insurance.png

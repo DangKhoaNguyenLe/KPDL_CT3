@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Danh Sách Tour - VietTour{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="container">
+        <h1>Danh Sách Tour</h1>
+        <p>Tìm kiếm và lựa chọn chuyến đi phù hợp với bạn</p>
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+
+        <!-- FILTER BAR -->
+        <div class="filter-bar">
+            <form action="{{ url_for('tours') }}" method="GET" class="filter-form">
+                <!-- Tìm kiếm -->
+                <div class="filter-group search-group">
+                    <input type="text" name="search" value="{{ search }}" placeholder="Tìm điểm đến, tên tour...">
+                    <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+
+                <!-- Danh mục -->
+                <div class="filter-group">
+                    <select name="category" onchange="this.form.submit()">
+                        <option value="all" {% if category == 'all' %}selected{% endif %}>🌍 Tất cả tour</option>
+                        <option value="trong_nuoc" {% if category == 'trong_nuoc' %}selected{% endif %}>🏞️ Trong nước</option>
+                        <option value="nuoc_ngoai" {% if category == 'nuoc_ngoai' %}selected{% endif %}>✈️ Nước ngoài</option>
+                    </select>
+                </div>
+
+                <!-- Sắp xếp -->
+                <div class="filter-group">
+                    <select name="sort" onchange="this.form.submit()">
+                        <option value="default" {% if sort_by == 'default' %}selected{% endif %}>Mặc định</option>
+                        <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Giá tăng dần</option>
+                        <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Giá giảm dần</option>
+                        <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Đánh giá cao nhất</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+
+        <!-- KẾT QUẢ -->
+        <div class="results-info">
+            <span>Tìm thấy <strong>{{ tours | length }}</strong> tour</span>
+            {% if search %}
+            <span> cho "<em>{{ search }}</em>"</span>
+            <a href="{{ url_for('tours') }}" class="clear-search"><i class="fas fa-times"></i> Xóa tìm kiếm</a>
+            {% endif %}
+        </div>
+
+        <!-- DANH SÁCH TOUR -->
+        {% if tours %}
+        <div class="tours-grid">
+            {% for tour in tours %}
+            <div class="tour-card">
+                <div class="tour-image">
+                    <div class="tour-img-placeholder">
+                        {% if 'halong' in tour.image %}🌊
+                        {% elif 'hoian' in tour.image %}🏮
+                        {% elif 'phuquoc' in tour.image %}🏝️
+                        {% elif 'sapa' in tour.image %}⛰️
+                        {% elif 'thailand' in tour.image %}🛕
+                        {% else %}🌍{% endif %}
+                    </div>
+                    <span class="tour-badge">{{ tour.category | replace('trong_nuoc','Trong nước') | replace('nuoc_ngoai','Quốc tế') }}</span>
+                    <div class="tour-rating-badge">★ {{ tour.rating }}</div>
+                </div>
+                <div class="tour-info">
+                    <h3>{{ tour.name }}</h3>
+                    <p class="tour-dest"><i class="fas fa-map-marker-alt"></i> {{ tour.destination }}</p>
+                    <p class="tour-duration"><i class="fas fa-clock"></i> {{ tour.duration }}</p>
+                    <p class="tour-desc">{{ tour.description[:80] }}...</p>
+                    <div class="tour-footer">
+                        <div class="tour-price">
+                            <span class="price-from">Từ</span>
+                            <strong>{{ tour.price | format_price }}đ</strong>
+                            <span class="price-note">/người</span>
+                        </div>
+                        <a href="{{ url_for('tour_detail', tour_id=tour.id) }}" class="btn btn-primary">Xem Chi Tiết</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <h3>Không tìm thấy tour nào</h3>
+            <p>Hãy thử tìm kiếm với từ khóa khác</p>
+            <a href="{{ url_for('tours') }}" class="btn btn-primary">Xem tất cả tour</a>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}

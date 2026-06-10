@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Đặt Tour Thành Công - VietTour{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="success-page">
+            <div class="success-icon">✅</div>
+            <h1>Đặt Tour Thành Công!</h1>
+            <p>Cảm ơn bạn đã tin tưởng VietTour. Chúng tôi sẽ liên hệ xác nhận trong vòng 24 giờ.</p>
+            <div class="success-info">
+                <p><i class="fas fa-envelope"></i> Email xác nhận đã được gửi</p>
+                <p><i class="fas fa-phone"></i> Hotline hỗ trợ: 1900 1234</p>
+            </div>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Về Trang Chủ</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
