@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Gợi Ý Combo - VietTour{% endblock %}
+
+{% block content %}
+<section class="page-header" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80') center/cover;">
+    <div class="container">
+        <h1>Gợi Ý Combo Thông Minh</h1>
+        <p>Phân tích từ hành vi đặt tour để đưa ra những gợi ý tốt nhất cho bạn</p>
+    </div>
+</section>
+
+<section class="combo-section" style="padding: 50px 0; background-color: #f9f9f9;">
+    <div class="container">
+        <div class="section-title text-center" style="margin-bottom: 40px;">
+            <h2>Top Combo Dành Cho Khách Hàng</h2>
+            <p>Khám phá các lựa chọn kết hợp dịch vụ được nhiều người yêu thích nhất.</p>
+        </div>
+
+        {% if combos %}
+            <div class="combo-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px;">
+                {% for combo in combos %}
+                <div class="combo-card" style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s; position: relative;">
+                    <div class="combo-badge" style="position: absolute; top: 15px; right: 15px; background: #e74c3c; color: white; padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 13px;">
+                        #{{ loop.index }} Hot
+                    </div>
+                    
+                    <div class="combo-body" style="padding: 25px;">
+                        <h3 style="color: #1e3c72; margin-bottom: 20px; font-size: 18px; border-bottom: 2px dashed #eee; padding-bottom: 15px;">
+                            <i class="fas fa-gift" style="color: #e74c3c; margin-right: 8px;"></i> Combo Phổ Biến
+                        </h3>
+                        
+                        <div class="combo-detail">
+                            <div style="margin-bottom: 15px;">
+                                <strong style="color: #555; display: block; margin-bottom: 5px;"><i class="fas fa-user-check" style="color: #3498db; margin-right: 5px;"></i> Nếu khách hàng có:</strong>
+                                <div style="background: #f0f4f8; padding: 10px; border-radius: 8px; color: #333;">
+                                    {{ combo.antecedents }}
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: center; margin: 10px 0; color: #999;">
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                            
+                            <div>
+                                <strong style="color: #555; display: block; margin-bottom: 5px;"><i class="fas fa-lightbulb" style="color: #f1c40f; margin-right: 5px;"></i> Thì thường sẽ mua thêm:</strong>
+                                <div style="background: #fff3e0; padding: 10px; border-radius: 8px; color: #d35400; font-weight: 600;">
+                                    {{ combo.consequents }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="combo-footer" style="background: #f8f9fa; padding: 15px 25px; border-top: 1px solid #eee; display: flex; justify-content: space-between; font-size: 13px; color: #666;">
+                        <span title="Support"><i class="fas fa-chart-pie"></i> {{ "%.2f"|format(combo.support * 100) }}%</span>
+                        <span title="Confidence"><i class="fas fa-bullseye"></i> {{ "%.2f"|format(combo.confidence * 100) }}%</span>
+                        <span title="Lift"><i class="fas fa-rocket"></i> x{{ "%.2f"|format(combo.lift) }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state" style="text-align: center; padding: 50px 20px; background: #fff; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                <img src="https://cdn-icons-png.flaticon.com/512/7486/7486747.png" alt="No data" style="width: 120px; opacity: 0.5; margin-bottom: 20px;">
+                <h3 style="color: #333; margin-bottom: 10px;">Chưa có dữ liệu Combo</h3>
+                <p style="color: #777;">Hệ thống API chưa trả về dữ liệu combo hoặc backend chưa hoạt động.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<style>
+.combo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+}
+.combo-footer span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+</style>
+{% endblock %}

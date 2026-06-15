@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Đăng ký - VietTour{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h2 class="auth-title">Đăng Ký</h2>
+        <p class="auth-subtitle">Tạo tài khoản mới cùng VietTour</p>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('register') }}" method="POST" class="auth-form">
+            <div class="form-group">
+                <label for="username"><i class="fas fa-user"></i> Tên đăng nhập</label>
+                <input type="text" id="username" name="username" required placeholder="Nhập tên đăng nhập">
+            </div>
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> Mật khẩu</label>
+                <input type="password" id="password" name="password" required placeholder="Nhập mật khẩu">
+            </div>
+            <div class="form-group">
+                <label for="confirm_password"><i class="fas fa-check-circle"></i> Xác nhận mật khẩu</label>
+                <input type="password" id="confirm_password" name="confirm_password" required placeholder="Nhập lại mật khẩu">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Đăng Ký</button>
+        </form>
+        
+        <p class="auth-footer">
+            Đã có tài khoản? <a href="{{ url_for('login') }}">Đăng nhập</a>
+        </p>
+    </div>
+</div>
+
+<style>
+/* Kế thừa CSS từ file login.html (cùng thẻ style vì 2 trang này chung thiết kế) */
+.navbar, .footer { display: none !important; }
+main { padding: 0 !important; }
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(30, 60, 114, 0.8), rgba(42, 82, 152, 0.8)), url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80') center/cover no-repeat;
+}
+
+.auth-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 400px;
+    backdrop-filter: blur(10px);
+}
+
+.auth-title {
+    text-align: center;
+    color: #1e3c72;
+    margin-bottom: 5px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.auth-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; margin-bottom: 8px; color: #333; font-weight: 600; }
+.form-group input { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; transition: border-color 0.3s; }
+.form-group input:focus { outline: none; border-color: #1e3c72; }
+
+.btn-block { width: 100%; padding: 12px; font-size: 16px; font-weight: 600; margin-top: 10px; }
+.auth-footer { text-align: center; margin-top: 25px; color: #666; }
+.auth-footer a { color: #1e3c72; text-decoration: none; font-weight: 600; }
+.auth-footer a:hover { text-decoration: underline; }
+
+.alert { padding: 15px; margin-bottom: 20px; border-radius: 8px; font-size: 14px; }
+.alert-error { background-color: #fde8e8; color: #c81e1e; border: 1px solid #f8b4b4; }
+.alert-success { background-color: #def7ec; color: #03543f; border: 1px solid #84e1bc; }
+</style>
+{% endblock %}

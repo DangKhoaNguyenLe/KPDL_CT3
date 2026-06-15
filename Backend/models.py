@@ -49,3 +49,19 @@ class RecommendationResponse(BaseModel):
     support: float
     confidence: float
     lift: float
+
+class UserModel(BaseModel):
+    username: str
+    password: str
+
+class ServiceModel(BaseModel):
+    name: str
+    type: str
+    price: float
+    description: str
+
+class ReviewModel(BaseModel):
+    tour_id: int
+    user_id: str
+    rating: int
+    comment: str

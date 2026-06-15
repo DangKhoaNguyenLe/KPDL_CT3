@@ -24,12 +24,22 @@
             <li><a href="{{ url_for('tours') }}" class="{% if request.endpoint in ['tours','tour_detail'] %}active{% endif %}">
                 <i class="fas fa-map-marked-alt"></i> Danh Sách Tour
             </a></li>
+            <li><a href="{{ url_for('combo') }}" class="{% if request.endpoint == 'combo' %}active{% endif %}">
+                <i class="fas fa-gift"></i> Gợi Ý Combo
+            </a></li>
             <li>
                 <a href="{{ url_for('cart') }}" class="cart-link {% if request.endpoint == 'cart' %}active{% endif %}">
                     <i class="fas fa-shopping-cart"></i> Giỏ Hàng
                     <span class="cart-badge" id="cart-badge">{{ cart_count }}</span>
                 </a>
             </li>
+            {% if session.get('user_id') %}
+            <li>
+                <a href="{{ url_for('logout') }}" style="color: #e74c3c;">
+                    <i class="fas fa-sign-out-alt"></i> Đăng Xuất ({{ session.get('username') }})
+                </a>
+            </li>
+            {% endif %}
         </ul>
         <button class="hamburger" id="hamburger">
             <i class="fas fa-bars"></i>
@@ -73,6 +83,190 @@
         <p>© 2024 VietTour. All rights reserved.</p>
     </div>
 </footer>
+
+<!-- AI CHAT WIDGET -->
+<div id="ai-chat-widget">
+    <div id="ai-chat-header">
+        <span><i class="fas fa-robot"></i> VietTour AI</span>
+        <button id="ai-chat-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="ai-chat-body">
+        <div class="chat-msg bot-msg">Xin chào! Tôi là AI hỗ trợ của VietTour. Tôi có thể giúp gì cho bạn?</div>
+    </div>
+    <div id="ai-chat-input">
+        <input type="text" id="ai-chat-text" placeholder="Nhập câu hỏi...">
+        <button id="ai-chat-send"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+<button id="ai-chat-toggle"><i class="fas fa-comments"></i></button>
+
+<style>
+/* AI Chat Styles */
+#ai-chat-widget {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 320px;
+    height: 400px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+    display: none;
+    flex-direction: column;
+    z-index: 1000;
+    overflow: hidden;
+}
+#ai-chat-header {
+    background: #1e3c72;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+#ai-chat-header button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+#ai-chat-body {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #f9f9f9;
+}
+.chat-msg {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 85%;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+.bot-msg {
+    background: #e1f5fe;
+    color: #0277bd;
+    align-self: flex-start;
+}
+.user-msg {
+    background: #1e3c72;
+    color: white;
+    margin-left: auto;
+}
+#ai-chat-input {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #eee;
+}
+#ai-chat-text {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+}
+#ai-chat-send {
+    background: #1e3c72;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+#ai-chat-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chatToggle = document.getElementById('ai-chat-toggle');
+    const chatWidget = document.getElementById('ai-chat-widget');
+    const chatClose = document.getElementById('ai-chat-close');
+    const chatSend = document.getElementById('ai-chat-send');
+    const chatInput = document.getElementById('ai-chat-text');
+    const chatBody = document.getElementById('ai-chat-body');
+
+    chatToggle.addEventListener('click', () => {
+        chatWidget.style.display = chatWidget.style.display === 'none' || chatWidget.style.display === '' ? 'flex' : 'none';
+    });
+
+    chatClose.addEventListener('click', () => {
+        chatWidget.style.display = 'none';
+    });
+
+    function appendMessage(text, type) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'chat-msg ' + type + '-msg';
+        msgDiv.textContent = text;
+        chatBody.appendChild(msgDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        appendMessage(text, 'user');
+        chatInput.value = '';
+
+        // Add loading indicator
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'chat-msg bot-msg';
+        loadingDiv.id = 'chat-loading';
+        loadingDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang suy nghĩ...';
+        chatBody.appendChild(loadingDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const loadingMsg = document.getElementById('chat-loading');
+            if (loadingMsg) loadingMsg.remove();
+            
+            if (data.reply) {
+                appendMessage(data.reply, 'bot');
+            } else {
+                appendMessage("Xin lỗi, tôi gặp lỗi: " + (data.error || "Không rõ"), 'bot');
+            }
+        })
+        .catch(err => {
+            const loadingMsg = document.getElementById('chat-loading');
+            if (loadingMsg) loadingMsg.remove();
+            appendMessage("Lỗi kết nối. Vui lòng thử lại.", 'bot');
+        });
+    }
+
+    chatSend.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') sendMessage();
+    });
+});
+</script>
 
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
