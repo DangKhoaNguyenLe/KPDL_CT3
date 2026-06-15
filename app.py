@@ -266,14 +266,42 @@ def logout():
 # ============================================================
 # COMBO ROUTE
 # ============================================================
+def get_related_tours(combo_name, all_tours, limit=10):
+    related = []
+    if not all_tours:
+        return related
+        
+    if "Hạng Sang" in combo_name:
+        # Lọc tour nước ngoài hoặc giá > 10 triệu
+        related = [t for t in all_tours if t.get('category') == 'nuoc_ngoai' or float(t.get('price', 0)) > 10000000]
+        # Bổ sung các tour rating cao nếu chưa đủ
+        if len(related) < limit:
+            others = [t for t in all_tours if t not in related and float(t.get('rating', 0)) >= 4.5]
+            related.extend(others)
+    elif "Bình Dân" in combo_name:
+        # Lọc tour trong nước hoặc giá < 5 triệu
+        related = [t for t in all_tours if t.get('category') == 'trong_nuoc' or float(t.get('price', 0)) < 5000000]
+    elif "Phổ Biến" in combo_name:
+        # Lọc tour rating cao, nhiều review
+        related = sorted(all_tours, key=lambda x: (float(x.get('rating', 0)), int(x.get('reviews', 0))), reverse=True)
+    else:
+        related = all_tours.copy()
+        
+    return related[:limit]
+
 @app.route('/combo')
 def combo():
     cart_count = get_cart_count()
     combos = []
+    all_tours = fetch_tours()
+    
     try:
         response = requests.get(f"{BACKEND_URL}/recommend/")
         if response.status_code == 200:
             combos = response.json()
+            # Gắn danh sách 10 tour liên quan vào mỗi combo
+            for c in combos:
+                c['related_tours'] = get_related_tours(c.get('combo_name', ''), all_tours, limit=10)
     except Exception as e:
         print(f"Error fetching combos: {e}")
         

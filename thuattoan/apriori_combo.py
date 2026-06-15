@@ -7,7 +7,7 @@ import os
 # 1. ĐỌC DỮ LIỆU
 # =========================
 
-file_path = "Data/cleaned/TravelInsurance_cleaned.csv"
+file_path = "thuattoan/Data/cleaned/TravelInsurance_cleaned.csv"
 
 df = pd.read_csv(file_path)
 

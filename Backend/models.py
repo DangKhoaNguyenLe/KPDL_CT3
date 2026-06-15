@@ -44,6 +44,7 @@ class BookingModel(BaseModel):
 
 class RecommendationResponse(BaseModel):
     combo_id: int
+    combo_name: str = ""
     antecedents: str
     consequents: str
     support: float

@@ -1,0 +1,74 @@
+================================================================================
+TOP COMBO HÀNH VI KHÁCH HÀNG
+================================================================================
+
+COMBO 1
+Nếu khách hàng có: FrequentFlyer_Yes, TravelInsurance_1, GraduateOrNot_Yes
+Thì thường sẽ có: EverTravelledAbroad_Yes
+Support    : 0.0560
+Confidence : 0.5932
+Lift       : 3.0366
+--------------------------------------------------------------------------------
+COMBO 2
+Nếu khách hàng có: FrequentFlyer_Yes, TravelInsurance_1, Employment Type_Private Sector/Self Employed
+Thì thường sẽ có: EverTravelledAbroad_Yes
+Support    : 0.0544
+Confidence : 0.5812
+Lift       : 2.9751
+--------------------------------------------------------------------------------
+COMBO 3
+Nếu khách hàng có: FrequentFlyer_Yes, TravelInsurance_1
+Thì thường sẽ có: EverTravelledAbroad_Yes, Employment Type_Private Sector/Self Employed
+Support    : 0.0544
+Confidence : 0.4626
+Lift       : 2.8462
+--------------------------------------------------------------------------------
+COMBO 4
+Nếu khách hàng có: FrequentFlyer_Yes, TravelInsurance_1
+Thì thường sẽ có: EverTravelledAbroad_Yes, GraduateOrNot_Yes
+Support    : 0.0560
+Confidence : 0.4762
+Lift       : 2.8458
+--------------------------------------------------------------------------------
+COMBO 5
+Nếu khách hàng có: FrequentFlyer_Yes, TravelInsurance_1
+Thì thường sẽ có: EverTravelledAbroad_Yes
+Support    : 0.0649
+Confidence : 0.5510
+Lift       : 2.8206
+--------------------------------------------------------------------------------
+COMBO 6
+Nếu khách hàng có: EverTravelledAbroad_Yes, FrequentFlyer_Yes
+Thì thường sẽ có: TravelInsurance_1, Employment Type_Private Sector/Self Employed
+Support    : 0.0544
+Confidence : 0.6733
+Lift       : 2.3359
+--------------------------------------------------------------------------------
+COMBO 7
+Nếu khách hàng có: EverTravelledAbroad_Yes, ChronicDiseases_0
+Thì thường sẽ có: TravelInsurance_1, Employment Type_Private Sector/Self Employed, GraduateOrNot_Yes
+Support    : 0.0649
+Confidence : 0.5127
+Lift       : 2.2156
+--------------------------------------------------------------------------------
+COMBO 8
+Nếu khách hàng có: EverTravelledAbroad_Yes, TravelInsurance_1
+Thì thường sẽ có: FrequentFlyer_Yes, GraduateOrNot_Yes
+Support    : 0.0560
+Confidence : 0.4192
+Lift       : 2.1723
+--------------------------------------------------------------------------------
+COMBO 9
+Nếu khách hàng có: EverTravelledAbroad_Yes
+Thì thường sẽ có: TravelInsurance_1, Employment Type_Private Sector/Self Employed, GraduateOrNot_Yes
+Support    : 0.0977
+Confidence : 0.5000
+Lift       : 2.1609
+--------------------------------------------------------------------------------
+COMBO 10
+Nếu khách hàng có: TravelInsurance_1, Employment Type_Private Sector/Self Employed, GraduateOrNot_Yes
+Thì thường sẽ có: EverTravelledAbroad_Yes
+Support    : 0.0977
+Confidence : 0.4221
+Lift       : 2.1609
+--------------------------------------------------------------------------------

@@ -2,74 +2,138 @@
 {% block title %}Gợi Ý Combo - VietTour{% endblock %}
 
 {% block content %}
-<section class="page-header" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80') center/cover;">
+<section class="page-header"
+    style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80') center/cover;">
     <div class="container">
-        <h1>Gợi Ý Combo Thông Minh</h1>
-        <p>Phân tích từ hành vi đặt tour để đưa ra những gợi ý tốt nhất cho bạn</p>
+        <h1>Gợi Ý Combo Tour</h1>
+        <p>Dựa trên dữ liệu khách hàng, hệ thống gợi ý các nhóm khách có xu hướng mua bảo hiểm du lịch — giúp bạn chọn
+            tour phù hợp hơn</p>
     </div>
 </section>
 
 <section class="combo-section" style="padding: 50px 0; background-color: #f9f9f9;">
     <div class="container">
         <div class="section-title text-center" style="margin-bottom: 40px;">
-            <h2>Top Combo Dành Cho Khách Hàng</h2>
-            <p>Khám phá các lựa chọn kết hợp dịch vụ được nhiều người yêu thích nhất.</p>
+            <h2>Top Combo Được Đề Xuất</h2>
+            <p>Những nhóm đặc điểm khách hàng thường đi kèm nhau — giúp bạn hiểu xu hướng đặt tour.</p>
         </div>
 
         {% if combos %}
-            <div class="combo-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px;">
-                {% for combo in combos %}
-                <div class="combo-card" style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s; position: relative;">
-                    <div class="combo-badge" style="position: absolute; top: 15px; right: 15px; background: #e74c3c; color: white; padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 13px;">
-                        #{{ loop.index }} Hot
-                    </div>
-                    
-                    <div class="combo-body" style="padding: 25px;">
-                        <h3 style="color: #1e3c72; margin-bottom: 20px; font-size: 18px; border-bottom: 2px dashed #eee; padding-bottom: 15px;">
-                            <i class="fas fa-gift" style="color: #e74c3c; margin-right: 8px;"></i> Combo Phổ Biến
-                        </h3>
-                        
-                        <div class="combo-detail">
-                            <div style="margin-bottom: 15px;">
-                                <strong style="color: #555; display: block; margin-bottom: 5px;"><i class="fas fa-user-check" style="color: #3498db; margin-right: 5px;"></i> Nếu khách hàng có:</strong>
-                                <div style="background: #f0f4f8; padding: 10px; border-radius: 8px; color: #333;">
-                                    {{ combo.antecedents }}
+        <div class="combo-grid"
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px;">
+            {% for combo in combos %}
+            <div class="combo-card"
+                style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s; position: relative;">
+                <div class="combo-badge"
+                    style="position: absolute; top: 15px; right: 15px; background: #e74c3c; color: white; padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 13px;">
+                    #{{ loop.index }} Hot
+                </div>
+
+                <div class="combo-body" style="padding: 25px;">
+                    <h3
+                        style="color: #1e3c72; margin-bottom: 20px; font-size: 18px; border-bottom: 2px dashed #eee; padding-bottom: 15px;">
+                        <i class="fas fa-gift" style="color: #e74c3c; margin-right: 8px;"></i> Combo {{ loop.index }}
+                    </h3>
+
+                    <div class="combo-detail">
+                        <div style="margin-bottom: 15px;">
+                            <strong style="color: #555; display: block; margin-bottom: 5px;"><i
+                                    class="fas fa-user-check" style="color: #3498db; margin-right: 5px;"></i> Khách hàng
+                                có đặc điểm:</strong>
+                            <div style="background: #f0f4f8; padding: 12px; border-radius: 8px; color: #333;">
+                                {% for item in combo.antecedents.split('\n') %}
+                                <div
+                                    style="padding: 5px 10px; margin-bottom: 6px; background: #e3edf7; border-radius: 6px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fas fa-check-circle" style="color: #3498db; font-size: 12px;"></i> {{ item
+                                    }}
                                 </div>
-                            </div>
-                            
-                            <div style="text-align: center; margin: 10px 0; color: #999;">
-                                <i class="fas fa-arrow-down"></i>
-                            </div>
-                            
-                            <div>
-                                <strong style="color: #555; display: block; margin-bottom: 5px;"><i class="fas fa-lightbulb" style="color: #f1c40f; margin-right: 5px;"></i> Thì thường sẽ mua thêm:</strong>
-                                <div style="background: #fff3e0; padding: 10px; border-radius: 8px; color: #d35400; font-weight: 600;">
-                                    {{ combo.consequents }}
-                                </div>
+                                {% endfor %}
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="combo-footer" style="background: #f8f9fa; padding: 15px 25px; border-top: 1px solid #eee; display: flex; justify-content: space-between; font-size: 13px; color: #666;">
-                        <span title="Support"><i class="fas fa-chart-pie"></i> {{ "%.2f"|format(combo.support * 100) }}%</span>
-                        <span title="Confidence"><i class="fas fa-bullseye"></i> {{ "%.2f"|format(combo.confidence * 100) }}%</span>
-                        <span title="Lift"><i class="fas fa-rocket"></i> x{{ "%.2f"|format(combo.lift) }}</span>
+
+                        <div style="text-align: center; margin: 10px 0; color: #999;">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+
+                        <div>
+                            <strong style="color: #555; display: block; margin-bottom: 5px;"><i class="fas fa-lightbulb"
+                                    style="color: #f1c40f; margin-right: 5px;"></i> Thì thường sẽ mua tour:</strong>
+                            <div
+                                style="background: #fff3e0; padding: 12px; border-radius: 8px; color: #d35400; font-weight: 600;">
+                                {% for item in combo.consequents.split('\n') %}
+                                <div
+                                    style="padding: 5px 10px; margin-bottom: 6px; background: #ffe0b2; border-radius: 6px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fas fa-star" style="color: #e67e22; font-size: 12px;"></i> {{ item }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px;">
+                            <strong style="color: #555; display: block; margin-bottom: 10px;">
+                                <i class="fas fa-suitcase-rolling" style="color: #27ae60; margin-right: 5px;"></i> Tour đề xuất ({{ combo.related_tours|length }} tour)
+                            </strong>
+                            
+                            {% if combo.related_tours %}
+                            <div class="related-tours-scroll" style="display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px;">
+                                {% for tour in combo.related_tours %}
+                                <div class="related-tour-card" style="min-width: 180px; max-width: 180px; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; background: #fff; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: left; transition: transform 0.2s;">
+                                    <div style="height: 90px; background: #f4f6f8; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #a0aabf;">
+                                        {% if 'halong' in tour.image %}🌊
+                                        {% elif 'hoian' in tour.image %}🏮
+                                        {% elif 'phuquoc' in tour.image %}🏝️
+                                        {% elif 'sapa' in tour.image %}⛰️
+                                        {% elif 'thailand' in tour.image %}🛕
+                                        {% else %}🌍{% endif %}
+                                    </div>
+                                    <div style="padding: 10px;">
+                                        <div style="font-size: 11px; color: #7f8c8d; margin-bottom: 3px;"><i class="fas fa-star" style="color: #f1c40f;"></i> {{ tour.rating }} ({{ tour.reviews }})</div>
+                                        <h4 style="font-size: 13px; margin: 0 0 5px 0; color: #333; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 34px;" title="{{ tour.name }}">{{ tour.name }}</h4>
+                                        <div style="color: #e74c3c; font-weight: bold; font-size: 13px; margin-bottom: 8px;">{{ tour.price | format_price }}đ</div>
+                                        <a href="{{ url_for('tour_detail', tour_id=tour.id) }}" style="display: block; text-align: center; background: #3498db; color: white; padding: 6px; border-radius: 4px; font-size: 12px; text-decoration: none; font-weight: 500;">Xem ngay</a>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <p style="font-size: 13px; color: #999; font-style: italic;">Đang cập nhật tour phù hợp...</p>
+                            {% endif %}
+                        </div>
+
+                        <div style="text-align: center; margin-top: 15px;">
+                            <a href="{{ url_for('tours') }}" style="display: inline-block; color: #2a5298; font-size: 13px; text-decoration: none; font-weight: 600;">
+                                Xem tất cả danh sách tour <i class="fas fa-arrow-right" style="margin-left: 3px; font-size: 11px;"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                {% endfor %}
+
+                <div class="combo-footer"
+                    style="background: #f8f9fa; padding: 15px 25px; border-top: 1px solid #eee; display: flex; justify-content: space-between; font-size: 13px; color: #666;">
+                    <span title="Độ phổ biến — tỷ lệ xuất hiện trong toàn bộ dữ liệu"><i class="fas fa-chart-pie"></i>
+                        Độ phổ biến: {{ "%.2f"|format(combo.support * 100) }}%</span>
+                    <span title="Độ tin cậy — xác suất xảy ra kết quả khi có điều kiện"><i class="fas fa-bullseye"></i>
+                        Độ tin cậy: {{ "%.2f"|format(combo.confidence * 100) }}%</span>
+                    <span title="Mức tương quan — cho biết mối liên hệ mạnh hay yếu (>1 là mạnh)"><i
+                            class="fas fa-rocket"></i> Tương quan: x{{ "%.2f"|format(combo.lift) }}</span>
+                </div>
             </div>
+            {% endfor %}
+        </div>
         {% else %}
-            <div class="empty-state" style="text-align: center; padding: 50px 20px; background: #fff; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
-                <img src="https://cdn-icons-png.flaticon.com/512/7486/7486747.png" alt="No data" style="width: 120px; opacity: 0.5; margin-bottom: 20px;">
-                <h3 style="color: #333; margin-bottom: 10px;">Chưa có dữ liệu Combo</h3>
-                <p style="color: #777;">Hệ thống API chưa trả về dữ liệu combo hoặc backend chưa hoạt động.</p>
-            </div>
+        <div class="empty-state"
+            style="text-align: center; padding: 50px 20px; background: #fff; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+            <img src="https://cdn-icons-png.flaticon.com/512/7486/7486747.png" alt="No data"
+                style="width: 120px; opacity: 0.5; margin-bottom: 20px;">
+            <h3 style="color: #333; margin-bottom: 10px;">Chưa có dữ liệu Combo</h3>
+            <p style="color: #777;">Hệ thống API chưa trả về dữ liệu combo hoặc backend chưa hoạt động.</p>
+        </div>
         {% endif %}
     </div>
 </section>
 
 <style>
-.combo-card:hover {
+    .combo-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
 }
@@ -77,6 +141,27 @@
     display: flex;
     align-items: center;
     gap: 5px;
+}
+.combo-card a[href*="tours"]:hover {
+    text-decoration: underline !important;
+}
+.related-tours-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+.related-tours-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 10px;
+}
+.related-tours-scroll::-webkit-scrollbar-thumb {
+    background: #c1c1c1; 
+    border-radius: 10px;
+}
+.related-tours-scroll::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8; 
+}
+.related-tour-card:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.1) !important;
 }
 </style>
 {% endblock %}
